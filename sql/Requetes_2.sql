@@ -27,16 +27,16 @@ HAVING nb_commandes > 3;
 
 SELECT cl.nom AS Nom_Client, c.Date AS Date_commande, c.Id AS Id_Commande
 FROM clients cl
-         RIGHT JOIN commandes c ON cl.Id = c.Id_Client
+         LEFT JOIN commandes c ON cl.Id = c.Id_Client
 WHERE c.Date = (SELECT Max(Date) from commandes WHERE commandes.Id_Client = c.Id);
 
 #● Lister les clients ayant commandé des produits de plus de 100 € (sans doublons)
 
 SELECT DISTINCT cl.nom AS Nom_Client, p.nom AS Nom_Produit, p.prix AS Prix_Produit
 FROM clients cl
-         INNER JOIN commandes c ON cl.Id = c.Id_Client
-         INNER JOIN details_commande dc ON c.Id = dc.Id_Commande
-         INNER JOIN produits p ON dc.Id_Produit = p.Id
+         JOIN commandes c ON cl.Id = c.Id_Client
+         JOIN details_commande dc ON c.Id = dc.Id_Commande
+         JOIN produits p ON dc.Id_Produit = p.Id
 WHERE p.Prix > 100;
 
 #● Afficher le produit le plus vendu (en quantité totale)
@@ -50,11 +50,11 @@ LIMIT 1;
 
 #● Calculer pour chaque client son chiffre d'affaires total
 
-SELECT cl.nom AS Nom_Client, SUM(p.prix * dc.quantite)  AS CA
+SELECT cl.nom AS Nom_Client, SUM(p.prix * dc.quantite) AS CA
 FROM clients cl
-         JOIN commandes c ON cl.Id = c.Id_Client
-         JOIN details_commande dc ON c.Id = dc.Id_Commande
-         JOIN produits p ON dc.Id_Produit = p.Id
+        LEFT JOIN commandes c ON cl.Id = c.Id_Client
+        LEFT JOIN details_commande dc ON c.Id = dc.Id_Commande
+        LEFT JOIN produits p ON dc.Id_Produit = p.Id
 GROUP BY cl.nom;
 
 #● Pour chaque commande, lister le nombre de produits différents commandé

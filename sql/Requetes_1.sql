@@ -30,7 +30,7 @@ FROM commandes c
 
 #● Calculer le total des ventes pour chaque produit.
 
-SELECT p.nom, ROUND(SUM(p.Prix * dc.Quantite), 2) AS Total_ventes
+SELECT p.nom,ROUND(SUM(p.Prix * dc.Quantite), 2) AS Total_ventes
 FROM details_commande dc
          JOIN produits p ON p.Id = dc.Id_Produit
 GROUP BY p.nom;
@@ -40,5 +40,5 @@ GROUP BY p.nom;
 
 SELECT DISTINCT cl.nom, COUNT(c.id) AS nb_commandes
 FROM commandes c
-    LEFT JOIN clients cl ON c.Id_Client = cl.Id
+         LEFT JOIN clients cl ON c.Id_Client = cl.Id
 GROUP BY cl.Nom;
